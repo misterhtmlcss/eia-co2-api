@@ -4,7 +4,7 @@ const taxCalculator = (API_KEY, axios, router, codex, findStateCode, getDataForP
 
   return router.get('/tax-calculator', async (req, res, next) => {
     console.log('tax-calculator')
-    // try {
+    try {
       const { startYear, endYear, state } = req.query
 
       const label = findStateCode(state, codex)
@@ -41,10 +41,10 @@ const taxCalculator = (API_KEY, axios, router, codex, findStateCode, getDataForP
       }
       return res.render('index', results)
 
-    // }
-    // catch (err){
-    //   next(err)
-    // }
+    }
+    catch (err){
+      next(err)
+    }
   })
 }
 

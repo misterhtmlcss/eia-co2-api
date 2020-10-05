@@ -3,7 +3,7 @@
 const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear, capitalize) => {
 
   return router.get('/', async (req, res, next) => {
-    // try {
+    try {
       if(!req.query.year || !req.query.state) {
         return res.status(302).render( 'index', {
           message: "You need to enter a search query."
@@ -33,11 +33,11 @@ const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear
         }
       }
 
-    // }
-    // catch (err){
-    //   next(err)
-    //   // res.status(500).json({message: "Error: Issue with State Check"})
-    // }
+    }
+    catch (err){
+      next(err)
+      // res.status(500).json({message: "Error: Issue with State Check"})
+    }
   })
 }
 
