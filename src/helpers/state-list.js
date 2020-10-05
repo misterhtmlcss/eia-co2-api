@@ -1,23 +1,22 @@
 module.exports = [
   {
     name: "alabama",
-    label: "AL.A"
+    label: "AL.A",
   },
   {
     name: "alaska",
-    label: "AK.A"
+    label: "AK.A",
   },
   {
     name: "arizona",
-    label: "AZ.A"
+    label: "AZ.A",
   },
   {
     name: "arkansas",
-    label: "AR.A"
+    label: "AR.A",
   },
   {
     name: "california",
-    label: "CA.A"
+    label: "CA.A",
   },
 ];
-
