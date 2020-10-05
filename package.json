@@ -3,9 +3,26 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "engines": {
+    "node": "10.22.x",
+    "npm": "6.14.x"
+  },
   "scripts": {
     "start": "node ./src/index.js",
-    "dev": "nodemon --inspect ./src/index.js"
+    "dev": "nodemon --inspect ./src/index.js",
+    "lint": "eslint --ignore-path .gitignore --ext .js .",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js)\"",
+    "check-format": "npm run prettier -- --list-different",
+    "validate": "concurrently \"npm run check-format\" \"npm run lint\""
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm run prettier && lint-staged"
+    }
+  },
+  "lint-staged": {
+    "*.js": "eslint --cache --fix",
+    "*.{ts,js,css,md}": "prettier --write"
   },
   "author": "",
   "license": "ISC",
@@ -18,7 +35,11 @@
     "pug": "^3.0.0"
   },
   "devDependencies": {
+    "eslint": "^7.10.0",
+    "husky": "^4.3.0",
+    "lint-staged": "^10.4.0",
     "morgan": "^1.10.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "prettier": "^2.1.2"
   }
 }
