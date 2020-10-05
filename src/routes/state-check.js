@@ -4,12 +4,6 @@ const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear
 
   return router.get('/', async (req, res, next) => {
     try {
-      if(!req.query.year || !req.query.state) {
-        return res.status(302).render( 'index', {
-          message: "You need to enter a search query."
-        })
-      }
-
       const { year, state } = req.query
       const label = findStateCode(state, codex)
       const url = `https://api.eia.gov/series/?api_key=${API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`
