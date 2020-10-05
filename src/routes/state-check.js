@@ -1,5 +1,5 @@
 // /state-check
-// http://localhost:5000/state/state-check?year=2000&state=california
+// http://localhost:5000/state?year=2000&state=california
 const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear, capitalize) => {
 
   return router.get('/', async (req, res, next) => {
@@ -8,7 +8,6 @@ const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear
         return res.status(302).render( 'index', {
           message: "You need to enter a search query."
         })
-        // json({message: "You need to enter a search query."})
       }
 
       const { year, state } = req.query
@@ -19,7 +18,6 @@ const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear
       // [ '2013', 0.593558 ]
       for(const [key, value] of data){
         if(key === year){
-
           const results = {
             title: "state check",
             quantity: value,
@@ -27,8 +25,6 @@ const stateCheck = (API_KEY, axios, router, codex, findStateCode, getDataForYear
             year,
             tax: 0
           }
-
-
           return res.render('index', results)
         }
       }

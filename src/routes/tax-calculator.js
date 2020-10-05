@@ -1,9 +1,8 @@
 // /tax
-// http://localhost:5000/tax/tax-calculator?startYear=2003&endYear=2006&state=california
+// http://localhost:5000/tax?startYear=2003&endYear=2006&state=california
 const taxCalculator = (API_KEY, axios, router, codex, findStateCode, getDataForPeriod, capitalize) => {
 
   return router.get('/tax-calculator', async (req, res, next) => {
-    console.log('tax-calculator')
     try {
       const { startYear, endYear, state } = req.query
 
@@ -13,10 +12,9 @@ const taxCalculator = (API_KEY, axios, router, codex, findStateCode, getDataForP
 
       const { data } = await getDataForPeriod(startYear, endYear, state, 'CO2', url, axios)
 
-      // I assume the endYear is greater than the startYear
+      // I do assume the endYear is greater than the startYear
       let count = Math.abs(endYear - startYear);
 
-      // TODO: Should be refactored into a separate function -----
       let emissionAnalysis = []
       // [ '2013', 0.593558 ]
       for (const [year, emission] of data) {
@@ -24,7 +22,7 @@ const taxCalculator = (API_KEY, axios, router, codex, findStateCode, getDataForP
           emissionAnalysis.push(emission)
           count--
         }
-        if (year >= startYear && year < endYear){
+        if(year >= startYear && year < endYear){
           emissionAnalysis.push(emission)
           count--
         }

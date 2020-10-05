@@ -25,12 +25,9 @@ const capitalize = require('./helpers/capitalize');
 const errorHandler = require('./helpers/error')
 
 
-
-
+// Routes
 const stateCheck = require('./routes/state-check')(API_KEY , axios, router, codex, findStateCode, getDataForYear,  capitalize)
 const taxCalculator = require('./routes/tax-calculator')(API_KEY , axios, router, codex, findStateCode, getDataForPeriod,  capitalize)
-
-
 
 // Single State Tax bill for a Period of time (Years)
 // http://localhost:5000/tax?startYear=2003&endYear=2006&state=california
@@ -42,6 +39,7 @@ app.use('/tax', taxCalculator)
 app.use('/state', stateCheck)
 
 
+// Basic Error handler
 app.use(errorHandler)
 
 app.listen(PORT, () => console.log(`Listening on http://localhost:${PORT}`));
