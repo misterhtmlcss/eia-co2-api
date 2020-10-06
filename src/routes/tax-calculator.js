@@ -1,19 +1,16 @@
 const axios = require("axios");
 const router = require("express").Router();
-
+const { getDataForPeriod } = require("../helpers/fetch");
 // /tax
 // http://localhost:5000/tax?startYear=2003&endYear=2006&state=california
-const taxCalculator = (
-  API_KEY,
-  getDataForPeriod
-) => {
-  return router.get("/", async (req, res, next) => {
+
+router.get("/", async (req, res, next) => {
     try {
       const { startYear, endYear, state } = req.query;
       const { codex, capitalize, findStateCode } = res.locals
       const label = findStateCode(state, codex);
 
-      const url = `https://api.eia.gov/series/?api_key=${API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
+      const url = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
 
       const { data } = await getDataForPeriod(
         startYear,
@@ -49,6 +46,6 @@ const taxCalculator = (
       next(err);
     }
   });
-};
 
-module.exports = taxCalculator;
+
+module.exports = router

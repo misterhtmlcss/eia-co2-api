@@ -17,9 +17,9 @@ if (process.env.NODE_ENV !== "prod") {
 
 }
 
-// KEYS
-const PORT = process.env.PORT;
-const API_KEY = process.env.API_KEY;
+
+
+// const API_KEY = process.env.API_KEY;
 
 // Template setup
 app.use(express.json());
@@ -27,11 +27,8 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname + "/views"));
 
-// Helper functions
-// const codex =
-// const findStateCode =
-// const capitalize =
-const { getDataForYear, getDataForPeriod, getData } = require("./helpers/fetch");
+
+const { getDataForPeriod, getData } = require("./helpers/fetch");
 const errorHandler = require("./helpers/error");
 
 app.use(function (req, res, next) {
@@ -44,18 +41,15 @@ app.use(function (req, res, next) {
 })
 
 
-// Mongo DB connection
-require("./connect/db")();
-
 // Routes
 // State CO2 data
-const stateCheck = require("./routes/state-check")(API_KEY, getDataForYear);
+const stateCheck = require("./routes/state-check");
 
 // Calculate total tax owing
-const taxCalculator = require("./routes/tax-calculator")(API_KEY, getDataForPeriod);
+const taxCalculator = require("./routes/tax-calculator");
 
 // Publish to Database
-const saveData = require("./routes/save-data")(API_KEY, getData);
+const saveData = require("./routes/save-data");
 
 // Find highest CO2 Emitter
 // const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')(API_KEY, axios, router, codex, findStateCode, getDataForYear, capitalize)
@@ -75,6 +69,8 @@ app.use("/save", saveData);
 
 // Basic Error handler
 app.use(errorHandler);
+
+const PORT = process.env.PORT;
 
 app.listen(PORT, (err) => {
   if (err) {
