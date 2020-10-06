@@ -32,4 +32,16 @@ module.exports = {
       type,
     };
   },
+
+  getData: async function getData(
+    type = "CO2",
+    url,
+    axios
+    ){
+      const { data } = await axios.get(url);
+      return {
+      data: data.series[0].data,
+      type,
+    };
+  }
 };
