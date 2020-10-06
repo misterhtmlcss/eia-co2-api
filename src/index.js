@@ -9,22 +9,9 @@ const saveData = require("./routes/save-data");
 const errorHandler = require("./helpers/error");
 // const db = require("./connect/db")();
 
-// LOAD KEYS
-
-if (process.env.NODE_ENV !== "prod") {
-  // ---- Start: For development ----
-  require("dotenv").config();
-  // TODO: Should add the ability to write this to a file
-  const logger = require("./helpers/logger");
-  app.use(logger);
-  // ---- End: For development ----
-}
-
 // Template setup
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-
-
 
 app.use(function (req, res, next) {
   res.locals = {
@@ -34,8 +21,6 @@ app.use(function (req, res, next) {
   };
   next();
 });
-
-
 
 // Register api routes
 // Single State Tax bill for a Period of time (Years)
@@ -53,10 +38,19 @@ app.use("/save", saveData);
 // Find highest Emitter in a group.
 // app.use('/find-highest', findHighestCO2Emitter)
 
-app.use("*", (req, res) => res.status(404).json({ error: "not found" }))
+app.use("*", (req, res) => res.status(404).json({ error: "not found" }));
 
 // Basic Error handler
 app.use(errorHandler);
+
+if (process.env.NODE_ENV !== "prod") {
+  // ---- Start: For development ----
+  require("dotenv").config();
+  // TODO: Should add the ability to write this to a file
+  const logger = require("./helpers/logger");
+  app.use(logger);
+  // ---- End: For development ----
+}
 
 const PORT = process.env.PORT || 3000;
 
@@ -65,6 +59,7 @@ app.listen(PORT, (err) => {
     console.error("error", err);
     return;
   }
-  return null
-  // console.log(`Listing on port.... http://localhost:${PORT}`);
+  process.env.NODE_ENV !== "prod"
+    ? console.log(`Listing on port.... http://localhost:${PORT}`)
+    : null;
 });
