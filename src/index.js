@@ -9,10 +9,10 @@ const saveData = require("./routes/save-data");
 // const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')()
 
 // LOAD KEYS
-require("dotenv").config();
 
 if (process.env.NODE_ENV !== "prod") {
   // ---- Start: For development ----
+  require("dotenv").config();
   // TODO: Should add the ability to write this to a file
   const logger = require("./helpers/logger");
   app.use(logger);
@@ -66,5 +66,6 @@ app.listen(PORT, (err) => {
     console.error("error", err);
     return;
   }
-  console.log(`Listing on port.... http://localhost:${PORT}`);
+  return null
+  // console.log(`Listing on port.... http://localhost:${PORT}`);
 });
