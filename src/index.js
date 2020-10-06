@@ -1,12 +1,13 @@
-const path = require("path");
-
 // Express
 const express = require("express");
 const app = express();
+
 const stateCheck = require("./routes/state-check");
 const taxCalculator = require("./routes/tax-calculator");
 const saveData = require("./routes/save-data");
 // const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')()
+const errorHandler = require("./helpers/error");
+// const db = require("./connect/db")();
 
 // LOAD KEYS
 
@@ -23,9 +24,7 @@ if (process.env.NODE_ENV !== "prod") {
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// const db = require("./connect/db")();
 
-const errorHandler = require("./helpers/error");
 
 app.use(function (req, res, next) {
   res.locals = {
@@ -54,12 +53,12 @@ app.use("/save", saveData);
 // Find highest Emitter in a group.
 // app.use('/find-highest', findHighestCO2Emitter)
 
-// app.use("*", (req, res) => res.status(404).json({ error: "not found" }))
+app.use("*", (req, res) => res.status(404).json({ error: "not found" }))
 
 // Basic Error handler
 app.use(errorHandler);
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, (err) => {
   if (err) {
