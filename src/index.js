@@ -1,11 +1,10 @@
-// Core libraries
 const path = require("path");
-const axios = require("axios");
 
 // Express
 const express = require("express");
 const app = express();
-const router = require("express").Router();
+
+require("dotenv").config();
 
 // LOAD KEYS
 if (process.env.NODE_ENV !== "prod") {
@@ -15,7 +14,7 @@ if (process.env.NODE_ENV !== "prod") {
   app.use(logger);
   // ---- End: For testing ----
 
-  require("dotenv").config();
+
 }
 
 // KEYS
@@ -29,48 +28,34 @@ app.set("view engine", "pug");
 app.set("views", path.join(__dirname + "/views"));
 
 // Helper functions
-const codex = require("./helpers/state-list");
-const findStateCode = require("./helpers/find-state-code");
+// const codex =
+// const findStateCode =
+// const capitalize =
 const { getDataForYear, getDataForPeriod, getData } = require("./helpers/fetch");
-const capitalize = require("./helpers/capitalize");
 const errorHandler = require("./helpers/error");
+
+app.use(function (req, res, next) {
+  res.locals = {
+    codex: require("./helpers/state-list"),
+    capitalize: require("./helpers/capitalize"),
+    findStateCode: require("./helpers/find-state-code"),
+  }
+  next()
+})
+
 
 // Mongo DB connection
 require("./connect/db")();
 
 // Routes
 // State CO2 data
-const stateCheck = require("./routes/state-check")(
-  API_KEY,
-  axios,
-  router,
-  codex,
-  findStateCode,
-  getDataForYear,
-  capitalize
-);
+const stateCheck = require("./routes/state-check")(API_KEY, getDataForYear);
 
 // Calculate total tax owing
-const taxCalculator = require("./routes/tax-calculator")(
-  API_KEY,
-  axios,
-  router,
-  codex,
-  findStateCode,
-  getDataForPeriod,
-  capitalize
-);
+const taxCalculator = require("./routes/tax-calculator")(API_KEY, getDataForPeriod);
 
 // Publish to Database
-const saveData = require("./routes/save-data")(
-  API_KEY,
-  axios,
-  router,
-  codex,
-  findStateCode,
-  getData,
-  capitalize
-);
+const saveData = require("./routes/save-data")(API_KEY, getData);
 
 // Find highest CO2 Emitter
 // const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')(API_KEY, axios, router, codex, findStateCode, getDataForYear, capitalize)
