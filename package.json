@@ -17,11 +17,11 @@
   },
   "husky": {
     "hooks": {
-      "pre-commit": "npm run prettier && lint-staged"
+      "pre-commit": "lint-staged"
     }
   },
   "lint-staged": {
-    "*.js": "eslint --cache --fix",
+    "*.js": "./node_modules/.bin/eslint --cache --fix",
     "*.{ts,js,css,md}": "prettier --write"
   },
   "author": "",
@@ -30,7 +30,7 @@
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
-    "mongoose": "^5.10.7",
+    "mongodb": "^3.6.2",
     "path": "^0.12.7",
     "pug": "^3.0.0"
   },
