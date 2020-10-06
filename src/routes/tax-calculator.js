@@ -1,18 +1,16 @@
+const axios = require("axios");
+const router = require("express").Router();
+
 // /tax
 // http://localhost:5000/tax?startYear=2003&endYear=2006&state=california
 const taxCalculator = (
   API_KEY,
-  axios,
-  router,
-  codex,
-  findStateCode,
-  getDataForPeriod,
-  capitalize
+  getDataForPeriod
 ) => {
   return router.get("/", async (req, res, next) => {
     try {
       const { startYear, endYear, state } = req.query;
-
+      const { codex, capitalize, findStateCode } = res.locals
       const label = findStateCode(state, codex);
 
       const url = `https://api.eia.gov/series/?api_key=${API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
@@ -26,19 +24,14 @@ const taxCalculator = (
         axios
       );
 
-      // I do assume the endYear is greater than the startYear
-      let count = Math.abs(endYear - startYear);
-
       let emissionAnalysis = [];
       // [ '2013', 0.593558 ]
       for (const [year, emission] of data) {
         if (year === endYear) {
           emissionAnalysis.push(emission);
-          count--;
         }
         if (year >= startYear && year < endYear) {
           emissionAnalysis.push(emission);
-          count--;
         }
       }
       const totalEmissions = emissionAnalysis.reduce((a, b) => a + b, 0);

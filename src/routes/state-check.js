@@ -1,16 +1,11 @@
+const axios = require("axios");
+const router = require("express").Router();
 // /state-check
 // http://localhost:5000/state?year=2000&state=california
-const stateCheck = (
-  API_KEY,
-  axios,
-  router,
-  codex,
-  findStateCode,
-  getDataForYear,
-  capitalize
-) => {
+const stateCheck = (API_KEY, getDataForYear) => {
   return router.get("/state-check", async (req, res, next) => {
     try {
+      const { codex, capitalize, findStateCode } = res.locals
       const { year, state } = req.query;
       const label = findStateCode(state, codex);
       const url = `https://api.eia.gov/series/?api_key=${API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
