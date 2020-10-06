@@ -1,9 +1,6 @@
 module.exports = (req, res, next) => {
   console.log(
-    `\n
-    ${req.protocol}://${req.get("host")}${req.originalUrl} - ${Date()}
-    \n`
+    `${req.protocol}://${req.get("host")}${req.originalUrl} - ${Date()}`
   );
-  console.log(`${req.url}\n`);
   next();
 };
