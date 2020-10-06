@@ -13,13 +13,7 @@ if (process.env.NODE_ENV !== "prod") {
   const logger = require("./helpers/logger");
   app.use(logger);
   // ---- End: For testing ----
-
-
 }
-
-
-
-// const API_KEY = process.env.API_KEY;
 
 // Template setup
 app.use(express.json());
@@ -27,8 +21,9 @@ app.use(express.urlencoded({ extended: false }));
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname + "/views"));
 
+const db = require("./connect/db");
+db();
 
-const { getDataForPeriod, getData } = require("./helpers/fetch");
 const errorHandler = require("./helpers/error");
 
 app.use(function (req, res, next) {
@@ -36,10 +31,9 @@ app.use(function (req, res, next) {
     codex: require("./helpers/state-list"),
     capitalize: require("./helpers/capitalize"),
     findStateCode: require("./helpers/find-state-code"),
-  }
-  next()
-})
-
+  };
+  next();
+});
 
 // Routes
 // State CO2 data
