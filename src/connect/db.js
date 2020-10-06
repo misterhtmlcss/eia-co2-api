@@ -25,27 +25,31 @@
 // module.exports = dbConnect;
 
 // module.exports = {}
-const { MongoClient } = require("mongodb");
+// const { MongoClient } = require("mongodb");
 
-module.exports = async function conn() {
-  // Connection URI
-  const uri = process.env.MONGO_URI;
+// module.exports = async function conn() {
+//   // Connection URI
+//   const uri = process.env.MONGO_URI;
 
-  // Create a new MongoClient
-  const client = new MongoClient(uri);
-  try {
-    // Connect the client to the server
-    await client.connect();
+//   // Create a new MongoClient
+//   const client = new MongoClient(uri, {
+//     useNewUrlParser: true,
+//     useUnifiedTopology: true,
+//   });
 
-    const db = client.db("eia");
+//   try {
+//     // Connect the client to the server
+//     await client.connect();
 
-    // Establish and verify connection
-    await db.command({ ping: 1 });
-    console.log(`Connected successfully to server ${db.databaseName}`);
-  } catch (err) {
-    console.dir(err);
-  } finally {
-    // Ensures that the client will close when you finish/error
-    await client.close();
-  }
-};
+//     const db = client.db("eia");
+
+//     // Establish and verify connection
+//     await db.command({ ping: 1 });
+//     console.log(`Connected successfully to server ${db.databaseName}`);
+//   } catch (err) {
+//     console.dir(err);
+//   } finally {
+//     // Ensures that the client will close when you finish/error
+//     await client.close();
+//   }
+// };

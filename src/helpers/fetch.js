@@ -1,11 +1,15 @@
+const axios = require("axios");
+require("dotenv").config();
+const baseURL = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-`
+
 module.exports = {
   getDataForYear: async function getDataForYear(
     searchYear,
     searchState,
     type = "CO2",
-    url,
-    axios
+    label
   ) {
+    const url = `${baseURL}${label}`;
     const { data } = await axios.get(url);
     return {
       data: data.series[0].data,
@@ -20,9 +24,9 @@ module.exports = {
     endYear,
     searchState,
     type = "CO2",
-    url,
-    axios
+    label
   ) {
+    const url = `${baseURL}${label}`;
     const { data } = await axios.get(url);
     return {
       data: data.series[0].data,
@@ -35,9 +39,9 @@ module.exports = {
 
   getData: async function getData(
     type = "CO2",
-    url,
-    axios
-    ){
+    label
+  ) {
+      const url = `${baseURL}${label}`;
       const { data } = await axios.get(url);
       return {
       data: data.series[0].data,

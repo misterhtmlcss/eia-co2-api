@@ -1,16 +1,16 @@
-const axios = require("axios");
 const router = require("express").Router();
 const { getDataForYear } = require("../helpers/fetch");
+
 // /state-check
 // http://localhost:5000/state?year=2000&state=california
 
 router.get("/", async (req, res, next) => {
   try {
-    const { codex, capitalize, findStateCode } = res.locals
     const { year, state } = req.query;
+    const { codex, capitalize, findStateCode } = res.locals
     const label = findStateCode(state, codex);
-    const url = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
-    const { data } = await getDataForYear(year, state, "CO2", url, axios);
+
+    const { data } = await getDataForYear(year, state, "CO2", label);
 
     // [ '2013', 0.593558 ]
     for (const [key, value] of data) {

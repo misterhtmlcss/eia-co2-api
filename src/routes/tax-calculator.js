@@ -1,4 +1,3 @@
-const axios = require("axios");
 const router = require("express").Router();
 const { getDataForPeriod } = require("../helpers/fetch");
 // /tax
@@ -10,15 +9,14 @@ router.get("/", async (req, res, next) => {
       const { codex, capitalize, findStateCode } = res.locals
       const label = findStateCode(state, codex);
 
-      const url = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
+      // const url = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
 
       const { data } = await getDataForPeriod(
         startYear,
         endYear,
         state,
         "CO2",
-        url,
-        axios
+        label
       );
 
       let emissionAnalysis = [];
@@ -31,6 +29,7 @@ router.get("/", async (req, res, next) => {
           emissionAnalysis.push(emission);
         }
       }
+
       const totalEmissions = emissionAnalysis.reduce((a, b) => a + b, 0);
       const totalTax = totalEmissions.toFixed(2);
 
@@ -41,6 +40,7 @@ router.get("/", async (req, res, next) => {
         year: endYear,
         tax: totalTax,
       };
+
       return res.status(200).json(results);
     } catch (err) {
       next(err);
