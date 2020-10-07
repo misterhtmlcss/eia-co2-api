@@ -1,23 +1,24 @@
 const router = require("express").Router();
-const { getData } = require("../helpers/fetch");
+const { getData, findChosenStates } = require("../helpers/fetch");
 
 // Route
-// http://localhost:5000/save/test?states=alabama
+// http://localhost:3000/save/test?states=alabama
 router.get("/", async (req, res, next) => {
   try {
-    const { state } = req.query;
-    const { codex, findStateCode } = res.locals
-    const label = findStateCode(state, codex)
+    const { codex } = res.locals;
+    const queryData = Object.values(req.query);
+    const states = queryData.splice(0, queryData.length - 1);
 
-    // const url = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-${label}`;
-
-    const { data } = await getData("CO2", label);
-    // console.log("data", data);
-
-    return res.status(200).json({state, data});
+    const results = await findChosenStates(states, codex);
+    const statesData = await Promise.all(
+      results.map(async (state) => {
+        return await getData("CO2", state);
+      })
+    );
+    return res.status(200).json(statesData);
   } catch (err) {
-    next(err)
     // return res.status(500).json({ message: "Error!!!" });
+    next(err);
   }
 });
 
