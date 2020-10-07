@@ -1,26 +1,18 @@
+require("dotenv").config();
+
 // Express
 const express = require("express");
 const app = express();
+
+// Middlewares
+require("./helpers/setMiddlewares")(app);
 
 const stateCheck = require("./routes/state-check");
 const taxCalculator = require("./routes/tax-calculator");
 const saveData = require("./routes/save-data");
 // const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')()
+
 const errorHandler = require("./helpers/error");
-// const db = require("./connect/db")();
-
-// Template setup
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-
-app.use(function (req, res, next) {
-  res.locals = {
-    codex: require("./helpers/state-list"),
-    capitalize: require("./helpers/capitalize"),
-    findStateCode: require("./helpers/find-state-code"),
-  };
-  next();
-});
 
 // Register api routes
 // Single State Tax bill for a Period of time (Years)
@@ -45,7 +37,6 @@ app.use(errorHandler);
 
 if (process.env.NODE_ENV !== "prod") {
   // ---- Start: For development ----
-  require("dotenv").config();
   // TODO: Should add the ability to write this to a file
   const logger = require("./helpers/logger");
   app.use(logger);
