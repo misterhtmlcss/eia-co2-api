@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const { getData, findChosenStates } = require("../helpers/fetch");
-const { conn } = require("../connect/db");
+const { client } = require("../connect/db");
 require("dotenv").config();
 
 // Route
@@ -13,7 +13,22 @@ router.get("/", async (req, res, next) => {
 
     const results = await findChosenStates(states, codex, getData);
 
-    conn(results);
+    await client.connect();
+
+    const db = await client.db("eia");
+
+    console.log(`Connected successfully to DB ${db.databaseName}`);
+
+    for (const result of results) {
+      await db.command({
+        insert: `states`,
+        documents: [result],
+        ordered: false,
+        writeConcern: { w: "majority", wtimeout: 5000 },
+      });
+    }
+
+    await client.close();
 
     res.status(200).json({
       message: "Successfully written to the database",
