@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const { getDataForPeriod } = require("../helpers/fetch");
+
 // /tax
 // http://localhost:3000/tax?startYear=2003&endYear=2006&state=california
 
@@ -9,13 +10,7 @@ router.get("/", async (req, res, next) => {
     const { codex, capitalize, findStateCode } = res.locals;
     const label = findStateCode(state, codex);
 
-    const { data } = await getDataForPeriod(
-      startYear,
-      endYear,
-      state,
-      "CO2",
-      label
-    );
+    const { data } = await getDataForPeriod(startYear, endYear, state, label);
 
     let emissionAnalysis = [];
     // [ '2013', 0.593558 ]
@@ -29,16 +24,16 @@ router.get("/", async (req, res, next) => {
     }
 
     const totalEmissions = emissionAnalysis.reduce((a, b) => a + b, 0);
-    const totalTax = totalEmissions.toFixed(2);
+    const tax = totalEmissions.toFixed(2);
 
     const results = {
       title: "tax calculator",
       quantity: totalEmissions,
       state: capitalize(state),
-      year: endYear,
-      tax: totalTax,
+      startYear,
+      endYear,
+      tax,
     };
-
     return res.status(200).json(results);
   } catch (err) {
     next(err);

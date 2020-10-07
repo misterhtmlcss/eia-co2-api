@@ -1,5 +1,7 @@
 const router = require("express").Router();
 const { getData, findChosenStates } = require("../helpers/fetch");
+const { conn } = require("../connect/db");
+require("dotenv").config();
 
 // Route
 // http://localhost:3000/save/test?states=alabama
@@ -9,15 +11,14 @@ router.get("/", async (req, res, next) => {
     const queryData = Object.values(req.query);
     const states = queryData.splice(0, queryData.length - 1);
 
-    const results = await findChosenStates(states, codex);
-    const statesData = await Promise.all(
-      results.map(async (state) => {
-        return await getData("CO2", state);
-      })
-    );
-    return res.status(200).json(statesData);
+    const results = await findChosenStates(states, codex, getData);
+
+    conn(results);
+
+    res.status(200).json({
+      message: "Successfully written to the database",
+    });
   } catch (err) {
-    // return res.status(500).json({ message: "Error!!!" });
     next(err);
   }
 });

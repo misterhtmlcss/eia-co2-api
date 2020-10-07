@@ -10,7 +10,7 @@ router.get("/", async (req, res, next) => {
     const { codex, capitalize, findStateCode } = res.locals;
     const label = findStateCode(state, codex);
 
-    const { data } = await getDataForYear(year, state, "CO2", label);
+    const { data } = await getDataForYear(year, state, label);
 
     // [ '2013', 0.593558 ]
     for (const [key, value] of data) {
@@ -20,14 +20,12 @@ router.get("/", async (req, res, next) => {
           quantity: value,
           state: capitalize(state),
           year,
-          tax: 0,
         };
         return res.status(200).json(results);
       }
     }
   } catch (err) {
     next(err);
-    // res.status(500).json({message: "Error: Issue with State Check"})
   }
 });
 
