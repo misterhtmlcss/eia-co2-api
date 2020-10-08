@@ -8,5 +8,5 @@ const client = new MongoClient(uri, {
 });
 
 module.exports = {
-  client
+  client,
 };

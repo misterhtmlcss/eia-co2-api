@@ -14,6 +14,5 @@ module.exports.createResults = async (results) => {
     writeConcern: { w: "majority", wtimeout: 5000 },
   });
 
-
   await client.close();
 };
