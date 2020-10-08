@@ -18,6 +18,12 @@
 - Rename .env-rename to .env
 - Dev `npm run dev` or Prod `npm start`
 
+## Routes to test using Postman
+
+- CO2 Emmissions from the year set in the params: https://eia-co2-api-1d5a63.us1.kinto.io/api/v1/state?year=1980&state=alabama
+- CO2 Sum of emmissions between the years for the state set in the params: https://eia-co2-api-1d5a63.us1.kinto.io/api/v1/tax?startYear=2003&endYear=2006&state=california
+- COS Emissions of the states targetted and the data is pushed to MongoDB: https://eia-co2-api-1d5a63.us1.kinto.io/api/v1/save?state1=alabama&state2=alaska&state3=california&state4=arizona
+
 ## Caveats
 
 - You'll need your own API Key from EIA
