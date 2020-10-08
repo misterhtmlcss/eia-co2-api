@@ -1,8 +1,9 @@
-require("dotenv").config();
-
-// Express
 const express = require("express");
+const createError = require("http-errors");
+const morgan = require("morgan");
 const app = express();
+
+process.env.NODE_ENV !== "prod" && app.use(morgan("dev"));
 
 // Middlewares
 app.use(express.json());
@@ -17,50 +18,30 @@ app.use(function (req, res, next) {
   next();
 });
 
-const stateCheck = require("./routes/state-check");
-const taxCalculator = require("./routes/tax-calculator");
-const saveData = require("./routes/save-data");
-// const findHighestCO2Emitter = require('./routes/find-highest-co2-emitter')()
-
-const errorHandler = require("./helpers/error");
-
+const { stateCheck, taxCalculator, saveData } = require("./routes/api");
 // Register api routes
-// Single State Tax bill for a Period of time (Years)
-// http://localhost:5000/tax?startYear=2003&endYear=2006&state=california
-app.use("/tax", taxCalculator);
-
 // Can find the electric power carbon dioxide emissions of coal of any state
-// Single State Data
-// http://localhost:5000/state?year=2000&state=california
-app.use("/state", stateCheck);
-
+app.use("/api/v1/state", stateCheck);
+// Single State Tax bill for a Period of time (Years)
+app.use("/api/v1/tax", taxCalculator);
 // Push data to MongoDB
-app.use("/save", saveData);
+app.use("/api/v1/save", saveData);
 
-// Find highest Emitter in a group.
-// app.use('/find-highest', findHighestCO2Emitter)
-
-app.use("*", (req, res) => res.status(404).json({ error: "not found" }));
-
-// Basic Error handler
-app.use(errorHandler);
-
-if (process.env.NODE_ENV !== "prod") {
-  // ---- Start: For development ----
-  // TODO: Should add the ability to write this to a file
-  const logger = require("./helpers/logger");
-  app.use(logger);
-  // ---- End: For development ----
-}
-
-const PORT = process.env.PORT || 3000;
-
-app.listen(PORT, (err) => {
-  if (err) {
-    console.error("error", err);
-    return;
-  }
-  process.env.NODE_ENV !== "prod"
-    ? console.log(`Listing on port.... http://localhost:${PORT}`)
-    : null;
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+  next(createError(404));
 });
+
+// error handler
+app.use(function (err, req, res) {
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get("env") === "development" ? err : {};
+
+  // render the error page
+  res
+    .status(err.status || 500)
+    .json({ message: "You have generated an error, good luck debugging it!" });
+});
+
+module.exports = app;

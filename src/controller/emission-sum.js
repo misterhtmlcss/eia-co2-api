@@ -1,10 +1,6 @@
-const router = require("express").Router();
 const { getDataForYear } = require("../helpers/fetch");
 
-// /state-check
-// http://localhost:3000/state?year=2000&state=california
-
-router.get("/", async (req, res, next) => {
+const emissionsSum = async (req, res) => {
   try {
     const { year, state } = req.query;
     const { codex, capitalize, findStateCode } = res.locals;
@@ -25,8 +21,8 @@ router.get("/", async (req, res, next) => {
       }
     }
   } catch (err) {
-    next(err);
+    res.status(500).json(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = emissionsSum;

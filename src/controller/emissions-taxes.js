@@ -1,10 +1,6 @@
-const router = require("express").Router();
 const { getDataForPeriod } = require("../helpers/fetch");
 
-// /tax
-// http://localhost:3000/tax?startYear=2003&endYear=2006&state=california
-
-router.get("/", async (req, res, next) => {
+const emissionsTax = async (req, res) => {
   try {
     const { startYear, endYear, state } = req.query;
     const { codex, capitalize, findStateCode } = res.locals;
@@ -36,8 +32,8 @@ router.get("/", async (req, res, next) => {
     };
     return res.status(200).json(results);
   } catch (err) {
-    next(err);
+    res.status(500).json(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = emissionsTax;

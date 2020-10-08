@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "node ./src/index.js",
-    "dev": "nodemon --inspect ./src/index.js",
+    "dev": "nodemon --inspect ./server.js",
     "lint": "eslint --ignore-path .gitignore --ext .js .",
     "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js)\"",
     "check-format": "npm run prettier -- --list-different",
@@ -30,12 +30,14 @@
     "axios": "^0.20.0",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "http-errors": "^1.8.0",
     "mongodb": "^3.6.2"
   },
   "devDependencies": {
     "eslint": "^7.10.0",
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
+    "morgan": "^1.10.0",
     "nodemon": "^2.0.4",
     "prettier": "^2.1.2"
   }

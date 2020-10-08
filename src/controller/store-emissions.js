@@ -1,10 +1,7 @@
-const router = require("express").Router();
 const { getData, findChosenStates } = require("../helpers/fetch");
 const { createResults } = require("../services");
 
-// Route
-// http://localhost:3000/save/test?states=alabama
-router.post("/", async (req, res, next) => {
+const storeEmissions = async (req, res) => {
   try {
     const { codex } = res.locals;
     const queryData = Object.values(req.query);
@@ -18,8 +15,8 @@ router.post("/", async (req, res, next) => {
       message: "Successfully written to the database",
     });
   } catch (err) {
-    next(err);
+    res.status(500).json(err);
   }
-});
+};
 
-module.exports = router;
+module.exports = storeEmissions;
