@@ -5,7 +5,17 @@ const express = require("express");
 const app = express();
 
 // Middlewares
-require("./helpers/setMiddlewares")(app);
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(function (req, res, next) {
+  res.locals = {
+    codex: require("./helpers/state-list"),
+    capitalize: require("./helpers/capitalize"),
+    findStateCode: require("./helpers/find-state-code"),
+  };
+  next();
+});
 
 const stateCheck = require("./routes/state-check");
 const taxCalculator = require("./routes/tax-calculator");
