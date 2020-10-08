@@ -1,11 +1,10 @@
 const router = require("express").Router();
 const { getData, findChosenStates } = require("../helpers/fetch");
-// const { client } = require("../connect/db");
 const { createResults } = require("../services");
 
 // Route
 // http://localhost:3000/save/test?states=alabama
-router.get("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
     const { codex } = res.locals;
     const queryData = Object.values(req.query);
