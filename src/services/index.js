@@ -7,14 +7,13 @@ module.exports.createResults = async (results) => {
 
   console.log(`Connected successfully to DB ${db.databaseName}`);
 
-  for (const result of results) {
-    await db.command({
-      insert: `states`,
-      documents: [result],
-      ordered: false,
-      writeConcern: { w: "majority", wtimeout: 5000 },
-    });
-  }
+  await db.command({
+    insert: `states`,
+    documents: results,
+    ordered: false,
+    writeConcern: { w: "majority", wtimeout: 5000 },
+  });
+
 
   await client.close();
 };
