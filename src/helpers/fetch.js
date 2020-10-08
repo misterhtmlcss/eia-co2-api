@@ -1,5 +1,4 @@
 const axios = require("axios");
-require("dotenv").config();
 const baseURL = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-`;
 
 module.exports = {
