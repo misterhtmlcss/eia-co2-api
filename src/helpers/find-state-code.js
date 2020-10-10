@@ -5,4 +5,5 @@ module.exports = function findStateCode(state, codex) {
       return obj.label;
     }
   }
+  return null;
 };
