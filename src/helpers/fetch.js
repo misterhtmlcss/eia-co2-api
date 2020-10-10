@@ -2,11 +2,7 @@ const axios = require("axios");
 const baseURL = `https://api.eia.gov/series/?api_key=${process.env.API_KEY}&series_id=EMISS.CO2-TOTV-EC-CO-`;
 
 module.exports = {
-  getDataForYear: async function getDataForYear(
-    searchYear,
-    searchState,
-    label
-  ) {
+  getDataForYear: async function (searchYear, searchState, label) {
     const url = `${baseURL}${label}`;
     const { data } = await axios.get(url);
     return {
@@ -16,12 +12,7 @@ module.exports = {
     };
   },
 
-  getDataForPeriod: async function getDataForYear(
-    startYear,
-    endYear,
-    searchState,
-    label
-  ) {
+  getDataForPeriod: async function (startYear, endYear, searchState, label) {
     const url = `${baseURL}${label}`;
     const { data } = await axios.get(url);
     return {
@@ -32,7 +23,7 @@ module.exports = {
     };
   },
 
-  getData: async function getData({ name, label }) {
+  getDataFromEIA: async function ({ name, label }) {
     const url = `${baseURL}${label}`;
     const { data } = await axios.get(url);
     return {
