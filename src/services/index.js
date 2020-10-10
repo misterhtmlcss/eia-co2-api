@@ -1,26 +1,8 @@
-const { client } = require("../connect/db");
+// Routes
+module.exports = {
+  // Create stored data from API requests
+  createResults: require("./add-results"),
 
-module.exports.createResults = async (results) => {
-  try {
-    if (!results) {
-      return null;
-    }
-    await client.connect();
-
-    const db = await client.db("eia");
-
-    console.log(`Connected successfully to DB ${db.databaseName}`);
-
-    await db.command({
-      insert: `states`,
-      documents: results,
-      ordered: false,
-      writeConcern: { w: "majority", wtimeout: 5000 },
-    });
-
-    await client.close();
-    return results;
-  } catch (err) {
-    return { message: err };
-  }
+  // Get Stored data from MongoDB
+  findResults: require("./get-results"),
 };

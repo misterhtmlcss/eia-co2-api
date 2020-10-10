@@ -1,4 +1,4 @@
-const { getData, findChosenStates } = require("../helpers/fetch");
+const { getDataFromEIA, findChosenStates } = require("../helpers/fetch");
 const { createResults } = require("../services");
 
 const storeEmissions = async (req, res) => {
@@ -7,9 +7,9 @@ const storeEmissions = async (req, res) => {
     const queryData = Object.values(req.query);
     const states = queryData.splice(0, queryData.length - 1);
 
-    const results = await findChosenStates(states, codex, getData);
+    const results = await findChosenStates(states, codex, getDataFromEIA);
 
-    res.json({
+    res.status(200).json({
       message: "Successfully written to the database",
       payload: await createResults(results),
     });
