@@ -18,7 +18,8 @@
 - Rename .env-rename to .env
 - Dev `npm run dev` or Prod `npm start`
 - States available for testing are:
-  - ````{
+  - ```
+    {
       name: "alabama",
       label: "AL.A",
     },
@@ -37,8 +38,8 @@
     {
       name: "california",
       label: "CA.A",
-    }```
-    ````
+    }
+    ```
 
 ## Routes to test using Postman
 
