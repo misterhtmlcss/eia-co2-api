@@ -1,5 +1,3 @@
-// const app = require("express")();
-
 // Routes
 module.exports = {
   // State CO2 data
