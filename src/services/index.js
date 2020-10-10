@@ -15,4 +15,5 @@ module.exports.createResults = async (results) => {
   });
 
   await client.close();
+  return results;
 };
