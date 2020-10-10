@@ -30,7 +30,10 @@ const emissionsTax = async (req, res) => {
       endYear,
       tax,
     };
-    return res.status(200).json(results);
+    return res.status(200).json({
+      message: "Successfully received the data from EIA API",
+      payload: results,
+    });
   } catch (err) {
     res.status(500).json(err);
   }

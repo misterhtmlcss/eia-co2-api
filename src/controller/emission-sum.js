@@ -17,7 +17,10 @@ const emissionsSum = async (req, res) => {
           state: capitalize(state),
           year,
         };
-        return res.status(200).json(results);
+        return res.status(200).json({
+          message: "Successfully received the data from EIA API",
+          payload: results,
+        });
       }
     }
   } catch (err) {

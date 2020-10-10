@@ -9,10 +9,9 @@ const storeEmissions = async (req, res) => {
 
     const results = await findChosenStates(states, codex, getData);
 
-    await createResults(results);
-
-    res.status(200).json({
+    res.json({
       message: "Successfully written to the database",
+      payload: await createResults(results),
     });
   } catch (err) {
     res.status(500).json(err);
