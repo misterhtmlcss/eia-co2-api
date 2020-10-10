@@ -28,10 +28,12 @@ const emissionsTax = async (req, res) => {
     const totalEmissions = emissionAnalysis
       .reduce((a, b) => a + b, 0)
       .toFixed(2);
-    const tax = `You paid $${totalEmissions} million dollars in carbon taxes`;
+    const tax = `$${totalEmissions}`;
 
     const results = {
-      title: "CO2 Tax Paid Calculator",
+      title: `${capitalize(
+        state
+      )} paid taxes on ${tax} million metric tons of CO2 emmisions`,
       quantity: Number(totalEmissions),
       state: capitalize(state),
       startYear: Number(startYear),

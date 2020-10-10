@@ -16,7 +16,7 @@ const emissionsSum = async (req, res) => {
     for (const [key, value] of data) {
       if (key === year) {
         const results = {
-          title: "state check",
+          title: `${capitalize(state)} CO2 Emissions for ${year}`,
           quantity: Number(value.toFixed(2)),
           state: capitalize(state),
           year: Number(year),
