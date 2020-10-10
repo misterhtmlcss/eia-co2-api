@@ -18,7 +18,12 @@ app.use(function (req, res, next) {
   next();
 });
 
-const { stateCheck, taxCalculator, saveData } = require("./routes/api");
+const {
+  stateCheck,
+  taxCalculator,
+  saveData,
+  getLocalData,
+} = require("./routes/api");
 // Register api routes
 // Can find the electric power carbon dioxide emissions of coal of any state
 app.use("/api/v1/state", stateCheck);
@@ -26,6 +31,9 @@ app.use("/api/v1/state", stateCheck);
 app.use("/api/v1/tax", taxCalculator);
 // Push data to MongoDB
 app.use("/api/v1/save", saveData);
+
+// Get pushed data from MongoDB
+app.use("/api/v1/local", getLocalData);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

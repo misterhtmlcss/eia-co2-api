@@ -8,4 +8,6 @@ module.exports = {
 
   // Publish to Database
   saveData: require("./v1/save-data"),
+
+  getLocalData: require("./v1/get-data"),
 };
